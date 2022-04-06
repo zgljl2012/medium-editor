@@ -969,7 +969,9 @@
         getSelectedParentElement: function (range) {
             if (range === undefined) {
                 try {
-                    range = this.options.contentWindow.getSelection().getRangeAt(0);
+                    if (this.options.contentWindow.getSelection().rangeCount >= 1) {
+                        range = this.options.contentWindow.getSelection().getRangeAt(0);
+                    }
                 } catch (err) {
                     return {};
                 }
