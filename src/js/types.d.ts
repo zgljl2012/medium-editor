@@ -7,9 +7,13 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 declare namespace MediumEditor {
+  export interface Selection {
+    moveCursor(doc: Document, node: ChildNode, offset: number): void;
+  }
   export interface MediumEditor {
       // Initialization Functions
       new(elements: elementType, options?: CoreOptions): MediumEditor;
+      selection: Selection;
       destroy(): void;
       setup(): void;
       addElements(elements: elementType): void;
