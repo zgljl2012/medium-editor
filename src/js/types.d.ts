@@ -9,6 +9,7 @@
 declare namespace MediumEditor {
   export interface Selection {
     moveCursor(doc: Document, node: ChildNode, offset: number): void;
+    getSelectionStart(ownerDocument: Document)
   }
 
   export interface ExtensionOption {
