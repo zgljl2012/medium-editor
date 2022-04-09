@@ -17,15 +17,85 @@ declare namespace MediumEditor {
     destroy()
   }
 
+  export interface ExtensionPrototype {
+    init: () => void
+    getEditorId() : any
+    getEditorElements(): HTMLElement[]
+  }
+
   export interface Extension {
     extend(option: ExtensionOption)
-    prototype: {
-      init: () => void
-    }
+    prototype: ExtensionPrototype
   }
 
   export interface Util {
     traverseUp (el: HTMLElement, testElementFunction: (el: HTMLElement) => boolean)
+    isElement(el: HTMLElement): boolean
+  }
+
+  export interface Toolbar extends ExtensionPrototype {
+    new(someParam: any): Toolbar
+
+    name: string
+    align: string
+    allowMultiParagraphSelection: boolean
+    buttons: string[]
+    diffLeft: number
+    diffTop: number
+    firstButtonClass: string
+    lastButtonClass: string
+    standardizeSelectionStart: boolean
+    static: boolean
+    sticky: boolean
+    stickyTopOffset: number
+    updateOnEmptySelection: boolean
+    relativeContainer: HTMLElement
+
+    init()
+    // Helper method to execute method for every extension, but ignoring the toolbar extension
+    forEachExtension(iterator: any, context: any): any
+    // Toolbar creation/deletion
+    createToobar(): HTMLElement
+    createToolbarButtons(): HTMLElement
+    destroy()
+    // Toolbar accessors
+    getInteractionElements(): HTMLElement
+    getToolbarElement(): HTMLElement
+    getToolbarActionsElement(): HTMLElement
+    // Toolbar event handlers
+    initThrottledMethods()
+    attachEventHandlers()
+    handleWindowScroll()
+    handleWindowResize()
+    handleDocumentMouseup(event: any)
+    handleEditableClick()
+    handleEditableKeyup()
+    handleBlur()
+    handleFocus()
+    // Hiding/showing toolbar
+    isDisplayed(): boolean
+    showToolbar()
+    hideToolbar()
+    isToolbarDefaultActionsDisplayed(): boolean
+    hideToolbarDefaultActions()
+    showToolbarDefaultActions()
+    hideExtensionForms()
+    // Checks for existance of multiple block elements in the current selection
+    multipleBlockElementsSelected(): boolean
+    modifySelection()
+    checkState()
+    // Updating the toolbar
+    showAndUpdateToolbar()
+    setToolbarButtonStates()
+    checkActiveButtons()
+    // Positioning toolbar
+    positionToolbarIfShown()
+    setToolbarPosition()
+    positionStaticToolbar(container: any)
+    positionToolbar(selection: any)
+  }
+  export interface ExtensionsPackage {
+    toolbar: Toolbar
   }
 
   export interface MediumEditor {
@@ -33,6 +103,7 @@ declare namespace MediumEditor {
     new (elements: elementType, options?: CoreOptions): MediumEditor;
     selection: Selection;
     Extension: Extension;
+    extensions: ExtensionsPackage;
     util: Util
     destroy(): void;
     setup(): void;
